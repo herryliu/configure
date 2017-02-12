@@ -311,3 +311,7 @@ set tw=99
 
 "map s to <leader>s for easymotion
 map s <leader>s
+inoremap <Left> <Nop>
+inoremap <Right> <Nop>
+inoremap <Up> <Nop>
+inoremap <Down> <Nop>
