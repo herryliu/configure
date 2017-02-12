@@ -311,7 +311,13 @@ set tw=99
 
 "map s to <leader>s for easymotion
 map s <leader>s
+
+"disbale the arrowkeys
 inoremap <Left> <Nop>
 inoremap <Right> <Nop>
 inoremap <Up> <Nop>
 inoremap <Down> <Nop>
+nnoremap <Left> <Nop>
+nnoremap <Right> <Nop>
+nnoremap <Up> <Nop>
+nnoremap <Down> <Nop>
