@@ -163,26 +163,7 @@ map <C-w>n :nohl<CR>
 
 " xclip copy
 "vnoremap y y:call system("xclip -i -selection clipboard " , getreg("\""))<CR>
-vnoremap y y:call CopyToClip()<CR>
-"function CopyToClip()
-"    "echom "CopyToClip"
-"    "echom "register:" . getreg("\"")
-"    let copyToXclipCmd = "echo \'". getreg("\"") . "\' | xclip -i -selection clipboard & "
-"    "echom copyCmd
-"    call system(copyToXclipCmd)
-"    let copyToTmuxCmd = "echo \'". getreg("\"") . "\' | tmux load-buffer - &" 
-"    "echom copyCmd
-"    call system(copyToTmuxCmd)
-"endfunction
-
-function CopyToClip()
-    "echom "CopyToClip"
-    "echom "register:" . getreg("\"")
-    !"echo ". shellescape(getreg("\"")) . " | xclip -i -selection clipboard & "
-    "echom copyCmd
-    !"echo ". shellescape(getreg("\"")) . " | tmux load-buffer - &" 
-    "echom copyCmd
-endfunction
+vnoremap y ygv:w !tmux load-buffer -<CR>gv:w !xclip -i -selection clipboard<CR>
 " save/restore VIM session
 map <F11> :mksession! ~/.vim_session <cr>
 map <F12> :source ~/.vim_session <cr>
