@@ -185,14 +185,14 @@ set foldlevel=999
 let g:airline_theme='light'
 
 " cycle the window buffer
-nnoremap <leader>n :bnext<CR>
-nnoremap <leader>p :bprevious<CR>
+nnoremap <leader>N :bnext<CR>
+nnoremap <leader>P :bprevious<CR>
 "nnoremap <leader><Tab> :bnext<CR>
 "nnoremap <leader><space><Tab> :bprevious<CR>
 "change tab
-nnoremap <leader>N gt
-nnoremap <leader>P gT
-nnoremap <leader>C :tabedit<CR>
+nnoremap <leader>n gt
+nnoremap <leader>p gT
+nnoremap <leader>c :tabedit<CR>
 
 " unmap the ctl-i (donno when does it it mapped to sth else)
 "unmap <C-I>
@@ -311,3 +311,13 @@ set tw=99
 
 "map s to <leader>s for easymotion
 map s <leader>s
+
+"disbale the arrowkeys
+inoremap <Left> <Nop>
+inoremap <Right> <Nop>
+inoremap <Up> <Nop>
+inoremap <Down> <Nop>
+nnoremap <Left> <Nop>
+nnoremap <Right> <Nop>
+nnoremap <Up> <Nop>
+nnoremap <Down> <Nop>
