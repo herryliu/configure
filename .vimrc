@@ -45,7 +45,9 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'Yggdroot/indentLine'
 "Plugin 'zhaocai/GoldenView.Vim'
 Plugin 'bkad/CamelCaseMotion'
-
+Plugin 'ntpeters/vim-better-whitespace'
+"Plugin 'szw/vim-maximizer'
+Plugin 'nelstrom/vim-visual-star-search'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -88,6 +90,12 @@ vnoremap <C-Z> <C-C>:update<CR>
 inoremap <C-Z> <C-O>:update<CR>
 
 " bind Ctrl+<movement> keys instae of using Ctrl-W
+" set the ctrl-p to follow the symlinks
+let g:ctrlp_follow_symlinks = 1
+" set the default mode to be serrach both buffer and file
+let g:ctrlp_cmd = 'CtrlPMixed'
+" set to filename search by default
+let g:ctrlp_by_filename = 1
 
 map <C-j> <C-w>j
 map <C-k> <C-w>k
@@ -153,23 +161,16 @@ nmap <C-w><C-p> yt.:CtrlP<CR><C-\>c
 let g:ctrlp_follow_symlinks=1
 " ctrl-p doesn't change root directory
 let g:ctrlp_working_path_mode = 0
+" ctrl-p allow same buffer open in save tab/different window
+let g:ctrlp_switch_buffer = "t"
+
 
 " clear the highlight
 map <C-w>n :nohl<CR>
 
 " xclip copy
 "vnoremap y y:call system("xclip -i -selection clipboard " , getreg("\""))<CR>
-vnoremap y y:call CopyToClip()<CR>
-function CopyToClip()
-    "echom "CopyToClip"
-    "echom "register:" . getreg("\"")
-    let copyCmd = "echo \'". getreg("\"") . "\' | xclip -i -selection clipboard & "
-    "echom copyCmd
-    call system(copyCmd)
-    
-endfunction
-
-
+vnoremap y ygv:w !tmux load-buffer -<CR>gv:w !xclip -i -selection clipboard<CR><CR>
 " save/restore VIM session
 map <F11> :mksession! ~/.vim_session <cr>
 map <F12> :source ~/.vim_session <cr>
@@ -185,14 +186,14 @@ set foldlevel=999
 let g:airline_theme='light'
 
 " cycle the window buffer
-nnoremap <leader>N :bnext<CR>
-nnoremap <leader>P :bprevious<CR>
+nnoremap <leader>n :bnext<CR>
+nnoremap <leader>p :bprevious<CR>
 "nnoremap <leader><Tab> :bnext<CR>
 "nnoremap <leader><space><Tab> :bprevious<CR>
 "change tab
-nnoremap <leader>n gt
-nnoremap <leader>p gT
-nnoremap <leader>c :tabedit<CR>
+nnoremap <leader>N gt
+nnoremap <leader>P gT
+nnoremap <leader>C :tabedit<CR>
 
 " unmap the ctl-i (donno when does it it mapped to sth else)
 "unmap <C-I>
@@ -307,17 +308,16 @@ map <leader>l :set number!<CR>
 vnoremap // y/<C-R>"<CR>
 
 "set line limit to 79
-set tw=99
+"set tw=99
 
 "map s to <leader>s for easymotion
 map s <leader>s
 
-"disbale the arrowkeys
-inoremap <Left> <Nop>
-inoremap <Right> <Nop>
-inoremap <Up> <Nop>
-inoremap <Down> <Nop>
-nnoremap <Left> <Nop>
-nnoremap <Right> <Nop>
-nnoremap <Up> <Nop>
-nnoremap <Down> <Nop>
+set linebreak
+
+"clear all end of line space
+nnoremap <leader><Space> :StripWhitespace<CR>
+
+"window max and restore (ctrl-w-o / ctrl-w-u)
+nnoremap <C-w>o :mksession! ~/session.vim<CR>:wincmd o<CR>
+nnoremap <C-w>u :source ~/session.vim<CR>
