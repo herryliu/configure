@@ -21,7 +21,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'kien/ctrlp.vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'int3/vim-taglist-plus'
-"Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 "Plugin 'oblitum/YouCompleteMe'
 "Plugin 'jsholmes/YouCompleteMe'
 "Plugin 'vim-scripts/AutoComplPop'
@@ -82,6 +82,7 @@ set bs=2
 "set number
 
 " Rebind <leader> key
+" let mapleader=","
 let mapleader="\<Space>"
 
 " quicksave
@@ -93,9 +94,21 @@ inoremap <C-Z> <C-O>:update<CR>
 " set the ctrl-p to follow the symlinks
 let g:ctrlp_follow_symlinks = 1
 " set the default mode to be serrach both buffer and file
-let g:ctrlp_cmd = 'CtrlPMixed'
+"let g:ctrlp_cmd = 'CtrlPMixed'
 " set to filename search by default
 let g:ctrlp_by_filename = 1
+
+function YcmToggle()
+    if g:ycm_auto_trigger
+        let g:ycm_auto_trigger=0
+    else
+        let g:ycm_auto_trigger=1
+    endif
+endfunction
+
+nnoremap <leader>c :call YcmToggle()<CR> 
+"nnoremap <leader>ce :let g:ycm_auto_trigger=1<CR>
+"nnoremap <leader>cd :let g:ycm_auto_trigger=0<CR>
 
 map <C-j> <C-w>j
 map <C-k> <C-w>k
@@ -170,7 +183,8 @@ map <C-w>n :nohl<CR>
 
 " xclip copy
 "vnoremap y y:call system("xclip -i -selection clipboard " , getreg("\""))<CR>
-vnoremap y ygv:w !tmux load-buffer -<CR>gv:w !xclip -i -selection clipboard<CR><CR>
+"if you want to enable copy over xclip, plese enable the following line
+"vnoremap y ygv:w !tmux load-buffer -<CR>gv:w !xclip -i -selection clipboard<CR><CR>
 " save/restore VIM session
 map <F11> :mksession! ~/.vim_session <cr>
 map <F12> :source ~/.vim_session <cr>
@@ -209,9 +223,9 @@ let g:ycm_seed_identifiers_with_synatx = 1
 "let g:ycm_server_use_vim_stdout = 1
 let g:ycm_server_log_level = 'debug'
 "ycm jump to definition
-nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
-nnoremap <leader>jD :YcmCompleter GoToDeclaration<CR>
-nnoremap <leader>ji :YcmCompleter GoToInclude<CR>
+nnoremap <leader>d :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>D :YcmCompleter GoToDeclaration<CR>
+nnoremap <leader>i :YcmCompleter GoToInclude<CR>
 
 "set tag file
 set tags+=./.tags
