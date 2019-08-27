@@ -1,0 +1,141 @@
+## keybindings
+unbind C-b
+unbind C-a
+unbind %
+
+set-option -g prefix C-a
+set-window-option -g mode-keys vi
+
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+
+bind-key C-a    last-window
+bind-key v      split-window -h
+bind-key s      split-window -v
+bind-key C-h    send-key C-h
+
+bind-key -r C-h    resize-pane -L 5
+bind-key -r C-l    resize-pane -R 5
+bind-key -r C-j    resize-pane -D 5
+bind-key -r C-k    resize-pane -U 5
+
+bind-key r      source-file ~/.tmux.conf \; display-message "tumx.conf reloaded!!"
+bind-key R      refresh-client
+bind-key a      send-key C-a
+
+# change panes to equal size
+bind-key | choose-buffer
+bind-key = select-layout tiled
+
+# set terminal type to 256 color
+set -g default-terminal "screen-256color"
+
+## set status bar
+#set-option -g status-utf8 on
+set-option -g status-bg colour11
+set-option -g status-fg colour8
+
+set-window-option -g window-status-current-fg colour16
+set-window-option -g window-status-current-attr bold
+#set-window-option -g window-status-current-format ' #I #W '
+
+## set window notifications
+set-option -g visual-activity on
+#set-option -g visual-content on
+set-window-option -g monitor-activity on
+set-window-option -g automatic-rename off
+set-option -g allow-rename off
+#set-window-option -g automatic-rename on
+
+# set the base index to 1
+set-option -g base-index 1
+set-window-option -g pane-base-index 1
+
+## enable mouse
+#set-option -g mouse on
+#set-option -g mouse-select-pane on
+#set-window-option -g mode-keys vi
+#set-window-option -g mode-mouse on
+
+## disable mouse
+set-option -g mouse off
+
+#set-window-option -g monitor-activity off
+#set-window-option -g monitor-content off
+#set-option -g status-keys vi
+set-option -g history-limit 20000
+
+## pane border and colors
+set-option -g pane-active-border-fg yellow
+set-option -g pane-border-fg white
+
+## vi key for copy mode
+set-window-option -g mode-keys vi
+bind-key -T copy-mode-vi v send-key -X begin-selection
+bind-key -T copy-mode-vi C-v send-key -X rectangle-toggle
+#bind-key -t vi-copy y Enter
+#bind-key -t vi-copy y copy-pipe "~/work/Doit/doit/doitclient wclip"
+#unbind -t vi-copy Enter
+#bind-key -t vi-copy Enter copy-pipe "~/work/Doit/doit/doitclient wclip"
+#bind -t vi-copy C-c copy-pipe 'xclip -in -selection clipboard'
+#bind -t vi-copy y copy-selection \; copy-pipe 'xclip -in -selection clipboard'
+
+# temporarily disbaled
+#bind -T copy-mode-vi y send-key -X copy-pipe 'xclip -in -selection clipboard' \; send-key -X copy-selection
+
+bind -T copy-mode-vi y send-key -X copy-selection
+
+#bind -n C-v run "tmux set-buffer \"$(xclip -o)\"; tmux paste-buffer"
+#set M-c to start the search
+bind -T root M-c copy-mode \; command-prompt -p "Find" "send-keys -X search-backward %1"
+#set M-v to page the result
+bind -T root M-v paste-buffer
+
+
+
+## For move split in tmux and vim
+# Smart pane switching with awareness of Vim splits.
+# See: https://github.com/christoomey/vim-tmux-navigator
+is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
+    | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+bind-key -n C-h if-shell "$is_vim" "send-keys C-h"  "select-pane -L"
+bind-key -n C-j if-shell "$is_vim" "send-keys C-j"  "select-pane -D"
+bind-key -n C-k if-shell "$is_vim" "send-keys C-k"  "select-pane -U"
+bind-key -n C-l if-shell "$is_vim" "send-keys C-l"  "select-pane -R"
+bind-key -n C-\ if-shell "$is_vim" "send-keys C-\\" "select-pane -l"
+bind-key -T copy-mode-vi C-h select-pane -L
+bind-key -T copy-mode-vi C-j select-pane -D
+bind-key -T copy-mode-vi C-k select-pane -U
+bind-key -T copy-mode-vi C-l select-pane -R
+bind-key -T copy-mode-vi C-\ select-pane -l
+
+## Swap two pane
+#bind C-m command-prompt -p "Move To:" "swap-pane -t %1"
+bind C-m command-prompt -p "From:","To:" "swap-pane -s %1 -t %2"
+
+## toggle mouse
+set -g mouse off
+#bind m run ~/bin/mouse_toggle
+bind m set-option -g mouse on
+bind M set-option -g mouse off
+
+# enable focus-events
+set -g focus-events on
+
+# List of plugins
+set -g @plugin 'tmux-plugins/tpm'
+#set -g @plugin 'christoomey/vim-tmux-navigator'
+#set -g @plugin 'tmux-plugins/tmux-sensible'
+#set -g @plugin 'tmux-plugins/tmux-yank'
+# # Other examples:
+# # set -g @plugin 'github_username/plugin_name'
+# # set -g @plugin 'git@github.com/user/plugin'
+# # set -g @plugin 'git@bitbucket.com/user/plugin'
+#
+#Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'
+
+# bind b to control-h
+bind b send-key C-h
