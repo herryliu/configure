@@ -119,8 +119,8 @@ Prebuffering		= 64
 SoundDriver		= JACK:ALSA:OSS
 
 # Jack output settings.
-JackOutLeft		= "alsa_pcm:playback_1"
-JackOutRight		= "alsa_pcm:playback_2"
+#JackOutLeft		= "alsa_pcm:playback_1"
+#JackOutRight		= "alsa_pcm:playback_2"
 
 # OSS output device.
 OSSDevice		= /dev/dsp
