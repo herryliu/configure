@@ -1,0 +1,9 @@
+shopt -s expand_aliases 
+
+alias l="~/bin/song lyrics"
+alias i="~/bin/song info"
+alias n="~/bin/song next"
+alias p="~/bin/song previous"
+alias u="~/bin/song up"
+alias d="~/bin/song down"
+alias s="~/bin/song pause"

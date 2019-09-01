@@ -1,0 +1,57 @@
+#!/bin/sh
+# alias l="~/bin/song lyrics"
+# alias i="~/bin/song info"
+# alias n="~/bin/song next"
+# alias p="~/bin/song previous"
+# alias u="~/bin/song up"
+# alias d="~/bin/song down"
+# alias s="~/bin/song pause"
+
+action="$1"
+
+case "$action" in
+    'lyrics')
+        # print out the lyric of the song
+        mocp -Q '%file' | cat  "`sed 's/\.mp3$//'`" | less
+        ;;
+
+    'info')
+        # play next song
+        mocp -i
+        ;;
+
+    'next')
+        # play next song
+        mocp -f
+        ;;
+
+    'previous')
+        # play the previous song
+        mocp -r
+        ;;
+
+    'forward')
+        # forward 10 second
+        mocp -k 10
+        ;;
+
+    'backward')
+        # backward 10 seconds
+        mocp -k -10
+        ;;
+
+    'up')
+        # volume up
+        mocp -v +10
+        ;;
+
+    'down')
+        # volume down
+        mocp -v -10
+        ;;
+
+    'pause')
+        # pause play
+        mocp -G
+
+    esac

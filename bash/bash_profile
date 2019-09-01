@@ -1,0 +1,6 @@
+# load the ssh key
+# please replace the key file before use it
+eval `keychain -Q -q --agents ssh --eval hrt-herry/id_rsa`
+
+# source the .bashrc (most of config should be put into there)
+if [ -f ~/.bashrc ]; then . ~/.bashrc; fi

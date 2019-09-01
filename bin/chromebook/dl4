@@ -1,0 +1,55 @@
+#!/bin/sh
+
+default_option='-i -f 18 --download-archive archieve.txt'
+# -F --> show available format
+# --playlist-start --> playlist start number
+# --playlist-end --> playlist end number
+#example of list.txt to download 31 to 35 in a playlist
+#OPTIONS-ADD:--playlist-start 31 --playlist-end 35
+#https://www.youtube.com/watch?v=T1FGnz8eR00&list=PL2J8HA2q232vlSAy-6Ys_UxRkAY8LSotP
+
+list=${1:-'list.txt'}
+is_test=${2:-'0'}
+
+options=${default_option}
+url=''
+
+echo "list file: ${list} is_test: ${is_test}"
+
+while read l
+do
+
+    case "$l" in
+        OPTIONS:*)
+            # replace the options
+            options=`echo ${l} | cut -d ':' -f2`
+            ;;
+        OPTIONS-ADD:*)
+            extra_options=`echo ${l} | cut -d ':' -f2`
+            options="${options} ${extra_options}"
+            ;;
+        OPTIONS-RESET*)
+            options=${default_option}
+            ;;
+        http*|https*)
+            url=${l}
+            ;;
+        \#*)
+            echo "skipped"
+            ;;
+    esac
+    # check if the line is option or URL
+    if [ ! -z ${url} ]
+    then
+        dl_cmd="/usr/local/bin/youtube-dl ${options} ${url}"
+        echo "`date` : ${dl_cmd}" >> commands.txt
+        # if not a test, will execute the download
+        if [ "${is_test}" != '1' ]
+        then
+            ${dl_cmd}
+        fi
+        # reset the url to empty string
+        url=''
+    fi
+
+done <${list}
