@@ -1,0 +1,31 @@
+#!/bin/sh
+
+lyrics_bin='/usr/local/bin/lyrics'
+opencc_bin='/usr/bin/opencc'
+
+title=$1
+artist=$2
+
+media_file=$3
+
+media_dir=`dirname "$media_file"`
+echo "media_dir $media_dir"
+
+# -- figure out the directory name and file name --
+suffix=".${media_file##*.}"
+echo "suffix $suffix"
+lyrics_file=`basename -s $suffix "$media_file"`
+echo "lyrics_file $lyrics_file"
+
+lyrics_file_name="${media_dir}/${lyrics_file}"
+echo "lyrics_file_name $lyrics_file_name"
+
+# -- Get the lyrics file which might be just 'No song found...' ---
+${lyrics_bin} "${title}" "${artist}" > "${lyrics_file_name}.org"
+
+# -- Convert to traditional chinese as far as the file exists ---
+if [ -f "${lyrics_file_name}.org" ]
+then
+    echo "Convert It To Traditional"
+    ${opencc_bin} -i "${lyrics_file_name}.org" -o "${lyrics_file_name}"
+fi
