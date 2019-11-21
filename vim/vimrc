@@ -59,6 +59,14 @@ Plugin 'bkad/CamelCaseMotion'
 Plugin 'mileszs/ack.vim'
 Plugin 'nelstrom/vim-visual-star-search'
 
+" ------ 8. Others -----
+Plugin 'dhruvasagar/vim-table-mode'
+Plugin 'vimwiki/vimwiki'
+Plugin 'gyim/vim-boxdraw'
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
+
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -345,9 +353,9 @@ let g:ctrlp_switch_buffer = "t"
 
 " --------------- Tagbar / TagList Related Optoins -------
 ""tagbar / taglist
-nnoremap <leader>t :TagbarToggle<CR>
-nnoremap <leader>tf :TagbarOpen jf<CR>:TagbarTogglePause<CR>
-nnoremap <leader>tl :TlistToggle<CR>
+"nnoremap <leader>t :TagbarToggle<CR>
+"nnoremap <leader>tf :TagbarOpen jf<CR>:TagbarTogglePause<CR>
+"nnoremap <leader>tl :TlistToggle<CR>
 
 "add lines below or above and return to normal mode
 nnoremap <leader>o o<ESC>k
@@ -424,9 +432,9 @@ let g:AutoPairsShortcutFastWrap = '<leader>e'
 
 " ---------------- Easymotion Related Options -----------
 "change easy motion prefix to single leader
-map <Leader> <Plug>(easymotion-prefix)
+map <S-Enter> <Plug>(easymotion-prefix)
 "map s <Plug>(easymotion-s)
-map s <Plug>(easymotion-overwin-f2)
+map s <Plug>(easymotion-overwin-f)
 
 " ------------ incsearch-easymotion Related Options -----
 " insearch-easymotion
@@ -445,4 +453,28 @@ nnoremap S :Ack!<space>
 map <leader>/ :Ack<space>
 " ---------------- End Of ACK -----------
 
+" ---------- 8. Others --------------
 
+" ------ vimwiki ------
+"  disable the Enter to follow the line (it's too easy to create page
+"  accidentally)
+nmap <leader>wf <Plug>VimwikiFollowLink
+
+"-------- drawing ------
+" allow selection go beyond end of line
+"set virtualedit+=all
+
+" ------------ VIM Yank To System Buffer By OSC52 ------------
+function! Yank(text) abort
+  let escape = system('yank', a:text)
+  if v:shell_error
+    echoerr escape
+  else
+    call writefile([escape], '/dev/tty', 'b')
+  endif
+endfunction
+
+" -------- fzf -------
+"set rtp+=/usr/bin/fzf
+
+noremap <silent> y y:<C-U>call Yank(@0)<CR>
