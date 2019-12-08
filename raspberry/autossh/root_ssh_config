@@ -1,0 +1,10 @@
+Host hkzbox
+ HostName herryliuhk.asuscomm.com
+ User     herry
+ Port     22225
+ IdentityFile ~/.ssh/sshkey/id_zbox_autossh
+ RemoteForward 55522 127.0.0.1:22
+ UserKnownHostsFile=/dev/null
+ StrictHostKeyChecking=no
+ ServerAliveInterval 30
+ ServerAliveCountMax 5

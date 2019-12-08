@@ -1,0 +1,31 @@
+1. Installation of raspberry pi
+- download the right image from side (each hardware platform is different)
+- when dd the image on to the SD card, make sure use the right bloack size (512K seems works for Pi-zero kali image)
+
+2. Design of raspberry pi:
+- The pi should work as a wifi router and wifi client at same time with onboard Wifi interface
+- First, we need to disable the NetworkManager (multiple services) including
+    sudo systemctl stop NetworkManager-wait-online.service
+    sudo systemctl disable NetworkManager-wait-online.service
+
+    sudo systemctl stop NetworkManager-dispatcher.service
+    sudo systemctl disable NetworkManager-dispatcher.service
+
+    sudo systemctl stop network-manager.service
+    sudo systemctl disable network-manager.service
+
+- Secondly, make a virtual interface (wlan0ap) to run hostapd (it has be run before the managed interface)
+  The detial is in ~/bin/setup_wifi.sh which is root's cron job.
+
+- Third Start up the main interface wlan0 with wpa_supplicant to attached available wifi network and get DHCP IP by dhclient.
+
+- Forth, run autossh to hkzbox to setup reverse forwarding for remote access
+  - need to setup root account's ssh config and copy right key files from hkzbox
+  - the key file can be generated without password protection
+
+- the step 2 to 4 is scripted and scheduled as a crontab
+  @reboot sleep 30 && /root/bin/setup_wifi.sh > /dev/null
+
+3. Each of above config will saved for reference
+
+
