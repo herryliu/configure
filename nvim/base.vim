@@ -32,6 +32,8 @@ Plug 'qpkorr/vim-bufkill'
 
 " ------ 4. Vim Soruce Code Tagging/Structure  --------
 "Plug 'int3/vim-taglist-plus'
+" Please download the universal ctag if the default one from debian producing
+" errors. https://github.com/universal-ctags/ctags
 Plug 'majutsushi/tagbar'
 "Plug 'asford/tagselect'
 Plug 'tpope/vim-fugitive'
