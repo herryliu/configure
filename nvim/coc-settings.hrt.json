@@ -1,0 +1,19 @@
+{
+    "npm.binPath": "/home/john/.linuxbrew/bin/npm",
+    "languageserver": {
+        "ccls": {
+            "filetypes": ["c", "cpp", "objc", "objcpp"],
+            "initializationOptions": {
+                "index": {
+                    "initialBlacklist": [
+                        ".*"
+                    ],
+                    "threads": 2
+                }
+            }
+        }
+    },
+    "signature.preferShownAbove": false,
+    "signature.hideOnTextChange": true,
+    "python.jediEnabled": false
+}
