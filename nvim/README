@@ -1,0 +1,6 @@
+The nvim config file is "init.vim" which will not be created here.
+You should copy all the configure files and make a sym-link to the right init.*.vim for your setup.
+
+base.vim --> host the actual common config
+
+All other named init.*.vim will add extra lines for its usage

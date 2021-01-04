@@ -458,7 +458,7 @@ call camelcasemotion#CreateMotionMappings('')
 
 " --------------------- ACK Related Option ---------
 let g:ackprg="ag"
-nnoremap <leader>s :Ack!<space>
+nnoremap <leader>S :Ack!<space>
 "Ack search
 map <leader>/ :Ack<space>
 " ---------------- End Of ACK -----------
@@ -489,9 +489,13 @@ endfunction
 set rtp+=/home/admin/.linuxbrew/opt/fzf
 noremap <silent> y y:<C-U>call Yank(@0)<CR>
 "noremap <silent> <Leader>f :Files<CR>
-noremap <silent> <leader>f :Files<CR>
-noremap <silent> <leader>l :Lines<CR>
-noremap <silent> <leader>b :Buffers<CR>
+" all file/buffer/buffer line /all lines search/open will be <space> + Upper
+" case
+" all lines search for all directories below uses the Ack!--> map in Ack ession --> <space>S
+noremap <silent> <leader>F :Files<CR>
+noremap <silent> <leader>L :Lines<CR>
+noremap <silent> <leader>B :Buffers<CR>
+
 
 "inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 "inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
