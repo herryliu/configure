@@ -37,6 +37,7 @@ Plug 'qpkorr/vim-bufkill'
 Plug 'majutsushi/tagbar'
 "Plug 'asford/tagselect'
 Plug 'tpope/vim-fugitive'
+Plug 'pseewald/vim-anyfold'
 
 " ------ 5. Vim Source Code Auto-completion -----
 "Plug 'ervandew/supertab'
@@ -159,7 +160,7 @@ set history=10000
 
 "toggle the line number
 "map <leader>L :set number!<CR>:set relativenumber!<CR>
-map <leader>L :set number!<CR>
+map <leader>l :set number!<CR>
 
 set linebreak
 
