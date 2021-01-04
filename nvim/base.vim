@@ -26,14 +26,14 @@ Plug 'Wutzara/vim-materialtheme'
 Plug 'altercation/vim-colors-solarized'
 
 " ------ 3. Vim directory/file list/access -----
-Plug 'scrooloose/nerdtree'
-Plug 'kien/ctrlp.vim'
+"Plug 'scrooloose/nerdtree'
+"Plug 'kien/ctrlp.vim'
 Plug 'qpkorr/vim-bufkill'
 
 " ------ 4. Vim Soruce Code Tagging/Structure  --------
-Plug 'int3/vim-taglist-plus'
+"Plug 'int3/vim-taglist-plus'
 Plug 'majutsushi/tagbar'
-Plug 'asford/tagselect'
+"Plug 'asford/tagselect'
 Plug 'tpope/vim-fugitive'
 
 " ------ 5. Vim Source Code Auto-completion -----
@@ -362,7 +362,7 @@ let g:ctrlp_switch_buffer = "t"
 
 " --------------- Tagbar / TagList Related Optoins -------
 ""tagbar / taglist
-"nnoremap <leader>t :TagbarToggle<CR>
+nnoremap <leader>T :TagbarToggle<CR>
 "nnoremap <leader>tf :TagbarOpen jf<CR>:TagbarTogglePause<CR>
 "nnoremap <leader>tl :TlistToggle<CR>
 
