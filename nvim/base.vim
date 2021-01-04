@@ -56,6 +56,7 @@ Plug 'terryma/vim-multiple-cursors'
 "Plug 'Raimondi/delimitMate'
 "Plug 'jiangmiao/auto-pairs'
 Plug 'honza/vim-snippets'
+Plug 'fidian/hexmode'
 
 " ------ 6.5 Vim Source Code Formating -------
 Plug 'google/vim-maktaba'
