@@ -1,0 +1,26 @@
+{
+  "languageserver": {
+    "ccls": {
+      "command": "ccls",
+      "filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
+      "rootPatterns": [".ccls-root", "compile_commands.json"],
+      "initializationOptions": {
+        "cache": {
+          "directory": ".ccls-cache"
+        },
+        "client": {
+          "snippetSupport": true
+        },
+		"index": {
+			"initialBlacklist": [
+				".*"
+			],
+			"threads": 2
+		}
+      }
+    }
+  },
+  "signature.preferShownAbove": false,
+  "signature.hideOnTextChange": true,
+  "python.jediEnabled": false
+}
