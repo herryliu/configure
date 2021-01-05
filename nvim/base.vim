@@ -38,6 +38,7 @@ Plug 'majutsushi/tagbar'
 "Plug 'asford/tagselect'
 Plug 'tpope/vim-fugitive'
 Plug 'pseewald/vim-anyfold'
+Plug 'nathanaelkane/vim-indent-guides'
 
 " ------ 5. Vim Source Code Auto-completion -----
 "Plug 'ervandew/supertab'
