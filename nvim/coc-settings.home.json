@@ -20,6 +20,8 @@
       }
     }
   },
+  "suggest.noselect": false,
+  "coc.preferences.noselect": false,
   "signature.preferShownAbove": false,
   "signature.hideOnTextChange": true,
   "python.jediEnabled": false
