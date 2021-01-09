@@ -80,7 +80,7 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 "Plug 'airblade/vim-rooter'
 Plug 'ncm2/float-preview.nvim'
-
+Plug 'chrisbra/csv.vim'
 
 " All of your Plugins must be added before the following line
 " Initialize plugin system
@@ -397,34 +397,28 @@ let g:jedi#show_call_signatures = "0"
 let g:jedi#popup_select_first = 1
 
 " ------ YCM Related Optoins ----------
-function YcmToggle()
-    if g:ycm_auto_trigger
-        let g:ycm_auto_trigger=0
-    else
-        let g:ycm_auto_trigger=1
-    endif
-endfunction
-
-nnoremap <leader>c :call YcmToggle()<CR>
+"function YcmToggle()
+"    if g:ycm_auto_trigger
+"        let g:ycm_auto_trigger=0
+"    else
+"        let g:ycm_auto_trigger=1
+"    endif
+"endfunction
+"
+"nnoremap <leader>c :call YcmToggle()<CR>
 "nnoremap <leader>ce :let g:ycm_auto_trigger=1<CR>
 "nnoremap <leader>cd :let g:ycm_auto_trigger=0<CR>
 "
 "let g:ycm_global_ycm_exta_config= "~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
 "let g:ycm_global_ycm_extra_conf='/scratch/herry/git/dev/.ycm_extra_conf.py'
 "let g:ycm_confirm_extra_conf = 0
-let g:syntastic_always_populate_loc_list = 1
-let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_seed_identifiers_with_synatx = 1
+"let g:syntastic_always_populate_loc_list = 1
+"let g:ycm_collect_identifiers_from_tags_files = 1
+"let g:ycm_seed_identifiers_with_synatx = 1
 "ycm debug
 "let g:ycm_server_use_vim_stdout = 1
-let g:ycm_server_log_level = 'debug'
+"let g:ycm_server_log_level = 'debug'
 "ycm jump to definition
-nmap <leader>gd <Plug>(coc-definition)
-nmap <leader>gD <Plug>(coc-declaration)
-nmap <leader>gi <Plug>(coc-implementation)
-nmap <leader>gt <Plug>(coc-type-definition)
-nmap <leader>gr <Plug>(coc-coc-references)
-nmap <leader>gu <Plug>(coc-references-used)
 
 "------- End of YCM -----------
 
@@ -475,6 +469,7 @@ map <leader>/ :Ack<space>
 "  accidentally)
 nmap <leader>wf <Plug>VimwikiFollowLink
 
+"
 "-------- drawing ------
 " allow selection go beyond end of line
 "set virtualedit+=all
@@ -539,10 +534,12 @@ endif
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+nmap <leader>gd <Plug>(coc-definition)
+nmap <leader>gD <Plug>(coc-declaration)
+nmap <leader>gi <Plug>(coc-implementation)
+nmap <leader>gt <Plug>(coc-type-definition)
+nmap <leader>gr <Plug>(coc-coc-references)
+nmap <leader>gu <Plug>(coc-references-used)
 
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -556,6 +553,10 @@ function! s:show_documentation()
     execute '!' . &keywordprg . " " . expand('<cword>')
   endif
 endfunction
+
+nnoremap <silent> <space>ce :CocEnable<CR>
+nnoremap <silent> <space>cd :CocDisable<CR>
+
 " -------- End of Coc setup ---------
 
 " Setup tab size by filetype
