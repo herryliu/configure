@@ -534,12 +534,12 @@ endif
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " GoTo code navigation.
-nmap <leader>gd <Plug>(coc-definition)
-nmap <leader>gD <Plug>(coc-declaration)
-nmap <leader>gi <Plug>(coc-implementation)
-nmap <leader>gt <Plug>(coc-type-definition)
-nmap <leader>gr <Plug>(coc-coc-references)
-nmap <leader>gu <Plug>(coc-references-used)
+nmap gd <Plug>(coc-definition)
+nmap gD <Plug>(coc-declaration)
+nmap gi <Plug>(coc-implementation)
+nmap gt <Plug>(coc-type-definition)
+nmap gr <Plug>(coc-coc-references)
+nmap gu <Plug>(coc-references-used)
 
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
