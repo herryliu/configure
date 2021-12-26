@@ -34,7 +34,8 @@ Plug 'qpkorr/vim-bufkill'
 "Plug 'int3/vim-taglist-plus'
 " Please download the universal ctag if the default one from debian producing
 " errors. https://github.com/universal-ctags/ctags
-Plug 'majutsushi/tagbar'
+"Plug 'majutsushi/tagbar'
+Plug 'preservim/tagbar'
 "Plug 'asford/tagselect'
 Plug 'tpope/vim-fugitive'
 Plug 'pseewald/vim-anyfold'
@@ -63,6 +64,10 @@ Plug 'fidian/hexmode'
 Plug 'google/vim-maktaba'
 Plug 'google/vim-codefmt'
 Plug 'google/vim-glaive'
+
+" ------ 6.6 Vim Source Code Debuging  -------
+Plug 'szw/vim-maximizer'
+Plug 'puremourning/vimspector'
 
 " ------ 7. Vim Source Code Searching/Movement -------
 Plug 'easymotion/vim-easymotion'
@@ -367,6 +372,7 @@ let g:ctrlp_switch_buffer = "t"
 
 " --------------- Tagbar / TagList Related Optoins -------
 ""tagbar / taglist
+let g:tagbar_ctags_bin='/usr/bin/ctags-universal'
 nnoremap <leader>T :TagbarToggle<CR>
 "nnoremap <leader>tf :TagbarOpen jf<CR>:TagbarTogglePause<CR>
 "nnoremap <leader>tl :TlistToggle<CR>
@@ -438,6 +444,26 @@ let g:pymode_options_max_line_length = 128
 " ------------- Auto Pairs Related Options -------------
 let g:AutoPairsShortcutToggle = '<leader>"'
 let g:AutoPairsShortcutFastWrap = '<leader>e'
+
+" ====== 6.6 Vim Source Code Debuging  =======
+nnoremap <leader>m :MaximizerToggle<CR>
+
+" ------- vimspector setting -----
+let g:vimspector_enable_mappings = 'HUMAN'
+nmap <leader>dd :call vimspector#Launch()<CR>
+nmap <leader>dx :VimspectorReset<CR>
+nmap <leader>de :VimspectorEval<space>
+nmap <leader>dw :VimspectorWatch<space>
+"nmap <leader>do <plug>VimspectorShowOutput
+nmap <leader>db <plug>VimspectorToggleBreakpoint
+nmap <leader>dc <plug>VimspectorContinue
+nmap <leader>ds <plug>VimspectorStop
+nmap <leader>dr <plug>VimspectorRestart
+nmap <leader>dp <plug>VimspectorPause
+nmap <leader>dc <plug>VimspectorRunToCursor
+nmap <leader>dn <plug>VimspectorStepOver
+nmap <leader>di <plug>VimspectorStepInto
+nmap <leader>do <plug>VimspectorStepOutput
 
 "====== 7. Vim Source Code Searching/Movement ========
 

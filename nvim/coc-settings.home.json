@@ -1,28 +1,20 @@
 {
   "languageserver": {
     "ccls": {
-      "command": "ccls",
-      "filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
-      "rootPatterns": [".ccls-root", "compile_commands.json"],
+      "command": "/usr/bin/ccls",
+      "args": ["-log-file=/tmp/ccls/ccls.log", "-v=2"],
+      "filetypes": ["c", "cpp", "objc", "objcpp"],
+      "rootPatterns": [".ccls", "compile_commands.json", ".vim/", ".git/", ".hg/"],
+      "trace.server": "verbose",
       "initializationOptions": {
-        "cache": {
-          "directory": ".ccls-cache"
-        },
-        "client": {
-          "snippetSupport": true
-        },
-		"index": {
-			"initialBlacklist": [
-				".*"
-			],
-			"threads": 2
-		}
-      }
+          "request":{"timeout":50000},
+          "cache": {
+           "directory": "/tmp/ccls"
+         }
+       }
     }
   },
   "suggest.noselect": false,
-  "coc.preferences.noselect": false,
   "signature.preferShownAbove": false,
-  "signature.hideOnTextChange": true,
-  "python.jediEnabled": false
+  "signature.hideOnTextChange": true
 }
