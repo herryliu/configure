@@ -463,10 +463,10 @@ nmap <leader>dc <plug>VimspectorContinue
 nmap <leader>ds <plug>VimspectorStop
 nmap <leader>dr <plug>VimspectorRestart
 nmap <leader>dp <plug>VimspectorPause
-nmap <leader>dc <plug>VimspectorRunToCursor
+nmap <leader>dh <plug>VimspectorRunToCursor
 nmap <leader>dn <plug>VimspectorStepOver
 nmap <leader>di <plug>VimspectorStepInto
-nmap <leader>do <plug>VimspectorStepOutput
+nmap <leader>do <plug>VimspectorStepOut
 
 "====== 7. Vim Source Code Searching/Movement ========
 

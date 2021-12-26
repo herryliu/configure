@@ -1,6 +1,7 @@
 {
     "languageserver": {
         "ccls": {
+           "command": "/usr/local/hrt-localcoding/bin/ccls",
             "filetypes": ["c", "cpp", "objc", "objcpp"],
             "initializationOptions": {
                 "index": {
