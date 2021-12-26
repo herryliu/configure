@@ -70,7 +70,8 @@ Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-easymotion.vim'
 Plug 'bkad/CamelCaseMotion'
 Plug 'mileszs/ack.vim'
-Plug 'nelstrom/vim-visual-star-search'
+"Plug 'nelstrom/vim-visual-star-search'
+Plug 'bronson/vim-visual-star-search'
 
 " ------ 8. Others -----
 Plug 'dhruvasagar/vim-table-mode'
@@ -81,6 +82,8 @@ Plug 'junegunn/fzf.vim'
 "Plug 'airblade/vim-rooter'
 Plug 'ncm2/float-preview.nvim'
 Plug 'chrisbra/csv.vim'
+"Plug 'tversteeg/registers.nvim', { 'branch': 'main' }
+Plug 'junegunn/vim-peekaboo'
 
 " All of your Plugins must be added before the following line
 " Initialize plugin system
