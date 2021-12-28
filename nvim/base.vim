@@ -79,6 +79,7 @@ Plug 'bkad/CamelCaseMotion'
 Plug 'mileszs/ack.vim'
 "Plug 'nelstrom/vim-visual-star-search'
 Plug 'bronson/vim-visual-star-search'
+Plug 'rickhowe/spotdiff.vim'
 
 " ------ 8. Others -----
 Plug 'dhruvasagar/vim-table-mode'
@@ -517,6 +518,7 @@ endfunction
 
 " -------- fzf -------
 "set rtp+=/usr/bin/fzf
+"set rtp+=/home/admin/.linuxbrew/opt/fzf
 set rtp+=/home/admin/.linuxbrew/opt/fzf
 noremap <silent> y y:<C-U>call Yank(@0)<CR>
 "noremap <silent> <Leader>f :Files<CR>

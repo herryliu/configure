@@ -1,0 +1,2 @@
+1. install the adaptor by run ~/.vim/plugged/vimspector/install_gadget.py --enable-xxx (just run it without any option to see all possible langurage)
+2. for each program project directory, please create .vimspector.json for each language type in order to get the debug running. Wrong json config might cause issue with uninstalled adapptor even if it's already installed.
