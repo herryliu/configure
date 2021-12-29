@@ -1,0 +1,110 @@
+# A valid snippet should starts with:
+#
+#		snippet trigger_word [ "description" [ options ] ]
+#
+# and end with:
+#
+#		endsnippet
+#
+# Snippet options:
+#
+#		b - Beginning of line.
+#		i - In-word expansion.
+#		w - Word boundary.
+#		r - Regular expression
+#		e - Custom context snippet
+#		A - Snippet will be triggered automatically, when condition matches.
+#
+# Basic example:
+#
+#		snippet emitter "emitter properties" b
+#		private readonly ${1} = new Emitter<$2>()
+#		public readonly ${1/^_(.*)/$1/}: Event<$2> = this.$1.event
+#		endsnippet
+#
+# Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
+
+snippet name "my name" b
+Herry Liu
+endsnippet
+
+snippet netboxaddecn "add ecn address" b
+address,status,vrf,dns_name
+${1:"192.168.199.1/28"},active,"Asia's ECN Addresses",${2:"dcoquipk1.dco-dce-l1-md-dco-vl199.hudson-trading.com"}
+$1,active,abc,$2
+endsnippet
+
+snippet test "Description" b
+name: ${1:herry}
+age: ${2:12}
+
+You are $1 with name $2
+
+
+
+
+end: $0
+endsnippet
+
+snippet qqq
+Your age: ${1|<18,18~60,>60|}
+Your height: ${2|<120cm,120cm~180cm,>180cm|}
+ok ${3:abc}
+
+$0
+endsnippet
+
+snippet ebgp "bgp configuration" b
+!----- eBGP Config ------
+!Local AS: ${1:65204}
+!Remote AS: ${2:65200}
+!Remote Colo:${3:aurora}
+!------------------------
+
+router bgp $1
+   neighbor $3-$2 peer-group
+   neighbor $3-$2 remote-as $2
+   neighbor $3-$2 timers 2 8
+   neighbor $3-$2 route-map learn-from-$3-$2 in
+   neighbor $3-$2 route-map advertise-to-$3-$2 out
+   neighbor $3-$2 send-community
+   neighbor $3-$2 maximum-routes 12000
+
+route-map learn-from-$3-$2 permit 10
+   match ip address prefix-list learn-from-$3-$2
+   match community primary
+   set local-preference 1000
+!
+route-map learn-from-$3-$2 permit 20
+   match ip address prefix-list learn-from-$3-$2
+   match community secondary
+   set local-preference 750
+!
+route-map learn-from-$3-$2 permit 30
+   match ip address prefix-list learn-from-$3-$2
+   set local-preference 1000
+
+ip prefix-list learn-from-$3-$2 seq 5 permit 0.0.0.0/0
+ip prefix-list learn-from-$3-$2 seq 10 permit 10.0.0.0/8
+ip prefix-list learn-from-$3-$2 seq 20 permit 172.31.0.0/16
+ip prefix-list learn-from-$3-$2 seq 30 permit 172.20.0.0/16
+ip prefix-list learn-from-$3-$2 seq 40 permit 10.31.128.0/20
+ip prefix-list learn-from-$3-$2 seq 50 permit 198.140.120.0/21
+ip prefix-list learn-from-$3-$2 seq 60 permit 172.22.0.0/16
+ip prefix-list learn-from-$3-$2 seq 70 permit 172.23.0.0/16
+ip prefix-list learn-from-$3-$2 seq 80 permit 212.161.22.0/23
+
+route-map advertise-to-$3-$2 permit 10
+   match ip address prefix-list advertise-to-$3-$2
+
+ip prefix-list advertise-to-$3-$2 seq 1 deny 10.30.224.0/23
+ip prefix-list advertise-to-$3-$2 seq 5 permit 10.30.0.0/16 ge 20
+ip prefix-list advertise-to-$3-$2 seq 10 permit 165.39.11.112/29
+ip prefix-list advertise-to-$3-$2 seq 15 permit 10.31.0.0/16 ge 20
+ip prefix-list advertise-to-$3-$2 seq 20 permit 165.39.113.192/27
+ip prefix-list advertise-to-$3-$2 seq 50 permit 10.30.192.0/18
+ip prefix-list advertise-to-$3-$2 seq 60 permit 10.30.224.0/20
+ip prefix-list advertise-to-$3-$2 seq 80 permit 10.30.224.208/28
+
+endsnippet
+

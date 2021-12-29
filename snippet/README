@@ -1,0 +1,12 @@
+The snippet is used for type format "hrt"
+The ideal is to make a list of template for things like:
+- configuration
+- installation steps
+- check-list
+
+Assuming those are all repeated tasks and can be easily generated with parameters.
+
+The snippet file should be linked to ~/.config/coc/ultisnips/
+
+such hrt one should be linked to ~/.config/coc/ultisnips/hrt.snippets
+
