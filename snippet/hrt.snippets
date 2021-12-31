@@ -24,8 +24,29 @@
 #
 # Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
 
+global !p
+def myTotal(a, b):
+	print("a: {} b: {}".format(a,b))
+    return (int) a+ (int) b
+endglobal
+
+
 snippet name "my name" b
 Herry Liu
+endsnippet
+
+snippet total "cal total" b
+a ${1:abc}
+b ${2:def}
+total is `!p snip.rv = myTotal(t[1],t[2])`
+finished
+endsnippet
+
+snippet add "Add two number" b
+a:${1:10}
+b:${2:20}
+total is `!p snip.rv = (int) t[1]+ (int) t[2]`
+finished $0
 endsnippet
 
 snippet netboxaddecn "add ecn address" b
@@ -107,4 +128,5 @@ ip prefix-list advertise-to-$3-$2 seq 60 permit 10.30.224.0/20
 ip prefix-list advertise-to-$3-$2 seq 80 permit 10.30.224.208/28
 
 endsnippet
+
 

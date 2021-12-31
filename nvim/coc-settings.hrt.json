@@ -19,5 +19,6 @@
     "coc.preferences.noselect": false,
     "signature.preferShownAbove": false,
     "signature.hideOnTextChange": true,
+    "snippets.trace": "verbose",
     "python.jediEnabled": false
 }

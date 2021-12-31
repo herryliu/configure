@@ -59,6 +59,7 @@ Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'terryma/vim-multiple-cursors'
 "Plug 'Raimondi/delimitMate'
 "Plug 'jiangmiao/auto-pairs'
+Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'fidian/hexmode'
 
@@ -450,6 +451,18 @@ let g:pymode_options_max_line_length = 128
 " ------------- Auto Pairs Related Options -------------
 let g:AutoPairsShortcutToggle = '<leader>"'
 let g:AutoPairsShortcutFastWrap = '<leader>e'
+
+" ------------- UltiSnip Config ---------
+" Trigger configuration. You need to change this to something other than <tab> if you use one of the following:
+" - https://github.com/Valloric/YouCompleteMe
+" - https://github.com/nvim-lua/completion-nvim
+let g:UltiSnipsExpandTrigger="<c-e>"
+let g:UltiSnipsListSnippets="<c-l>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "mysnippets"]
+
+
 
 " ====== 6.6 Vim Source Code Debuging  =======
 nnoremap <leader>m :MaximizerToggle<CR>
