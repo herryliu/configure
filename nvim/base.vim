@@ -24,6 +24,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'Wutzara/vim-materialtheme'
 Plug 'altercation/vim-colors-solarized'
+Plug 'morhetz/gruvbox'
 
 " ------ 3. Vim directory/file list/access -----
 "Plug 'scrooloose/nerdtree'
@@ -551,6 +552,8 @@ colorscheme gruvbox
 "colorscheme monokai
 
 " -------- Coc setup ---------
+" define the list of coc-extension
+let g:coc_global_extensions = ['coc-json', 'coc-lists', 'coc-yank', 'coc-snippets', 'coc-pairs', 'coc-yaml', 'coc-sh', 'coc-pyright', 'coc-ccls']
 " Some servers have issues with backup files, see #649.
 set nobackup
 set nowritebackup
