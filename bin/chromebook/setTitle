@@ -1,0 +1,9 @@
+#!/bin/sh
+
+Title=${1:-"Mosh"}
+# xwindow ecape sequence to set the title name is
+# \033]0;string\007
+# string is the title
+# echo -e "\033]0;${Title}\007"
+# remove the -e options
+echo "\033]0;${Title}\007"
