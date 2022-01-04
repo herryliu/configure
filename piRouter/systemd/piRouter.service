@@ -1,0 +1,12 @@
+[Unit]
+Description="piRouter Service"
+
+[Service]
+Type=idle
+User=${user}
+WorkingDirectory=${wdir}
+ExecStart=ap.sh
+Restart=no
+
+[Install]
+WantedBy=multi-user.target
