@@ -27,7 +27,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'morhetz/gruvbox'
 
 " ------ 3. Vim directory/file list/access -----
-"Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 "Plug 'kien/ctrlp.vim'
 Plug 'qpkorr/vim-bufkill'
 
@@ -375,6 +375,9 @@ let g:ctrlp_follow_symlinks=1
 let g:ctrlp_working_path_mode = 0
 " ctrl-p allow same buffer open in save tab/different window
 let g:ctrlp_switch_buffer = "t"
+
+" ------------ NerdTree -----------
+nmap <c-p> :NERDTree<CR>
 
 "========== 4. Vim Soruce Code Tagging/Structure ========
 
