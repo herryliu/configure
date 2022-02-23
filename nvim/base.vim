@@ -665,19 +665,19 @@ set guicursor=
 set nohlsearch
 
 " edit mode double captial letter command
-inoremap LL <Esc>lli
-inoremap JJ <Esc>lji
-inoremap KK <Esc>lki
-inoremap HH <Esc>lhi
-inoremap WW <Esc>lwi
-inoremap EE <Esc>lea
-inoremap BB <Esc>lbi
-inoremap OO <Esc>o
-inoremap DD <Esc>ldei
-inoremap XX <Esc>lxi
-inoremap AA <Esc>A
-inoremap II <Esc>I
-inoremap PP <Esc>lpi
+" inoremap LL <Esc>lli
+" inoremap JJ <Esc>lji
+" inoremap KK <Esc>lki
+" inoremap HH <Esc>lhi
+" inoremap WW <Esc>lwi
+" inoremap EE <Esc>lea
+" inoremap BB <Esc>lbi
+" inoremap OO <Esc>o
+" inoremap DD <Esc>ldei
+" inoremap XX <Esc>lxi
+" inoremap AA <Esc>A
+" inoremap II <Esc>I
+" inoremap PP <Esc>lpi
 
 " copy multiple data into regist a.
 vnoremap YY "Ay
