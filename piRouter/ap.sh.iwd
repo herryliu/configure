@@ -2,12 +2,30 @@
 
 # include the global setting file
 #. ./setting.sh
-. ${BASH_SOURCE%/*}/setting.sh
-echo "Starig the iwd process"
-# let's start the iwd manually and to manage "wan" interface
-sudo ${IWD} -i ${wan} &
-# sudo ${IWD} &
-${LOG} 'Wifi client started but it might take a while before it connected'
+#. ${BASH_SOURCE%/*}/setting.sh
+. /home/pi/piRouter/setting.sh
+
+
+if [ ${WifiMode} = "iwd" ]
+then
+
+    echo "Starig the iwd process"
+    # let's start the iwd manually and to manage "wan" interface
+    #sudo ${IWD} -i ${wan} &
+    # sudo ${IWD} &
+    ${LOG} 'Wifi client started but it might take a while before it connected'
+else
+    echo "start the wpa_supplicant "
+    # 5. Start the wpa_supplicant on wlan0 interface to attach to outside PA
+    sudo ${IP_CMD} link set up dev ${wan}
+    #sudo ${WPA_SUPPLICANT} -i ${wan} -B -c "${conf_dir}/wpa_supplicant.conf" -f /var/log/wpa_supplicant.log
+    sudo ${WPA_SUPPLICANT} -i ${wan} -B -c "${conf_dir}/wpa_supplicant.conf"   
+    # 6. Run DCHP client to get IP address
+    # sleep 10 sec to wait wan facing wireless interface up and running
+    sleep 10
+    sudo ${DHCLIENT} -v ${wan}
+    ${LOG} 'Wifi client started'
+fi
 echo "wifi started"
 
 # -1 setup Ethernet and OTG Ethernet Interface
@@ -45,9 +63,9 @@ ${LOG} 'OTG Ethernet through USB is configured and admin up'
 sudo ${IP_CMD} link set up dev ${ap}
 ${LOG} 'AP interface is created'
 sleep 2
-ps aux | grep wpa_supplicant > ${HOME}/still_running
-sudo ${KILL_ALL} wpa_supplicant
-${LOG} 'All wpa_supplicant process is killed'
+#ps aux | grep wpa_supplicant > ${HOME}/still_running
+#sudo ${KILL_ALL} wpa_supplicant
+#${LOG} 'All wpa_supplicant process is killed'
 
 # 2. Run hostapd to setup the AP
 # run from direct commadn line

@@ -26,9 +26,13 @@ IWD="/usr/libexec/iwd"
 # Pi4 onboard Wifi
 # mac: d0:37:45:6e:89:cd
 
+# wifi client mode iwd or wpa
+WifiMode='wpa'
+APSSID='4784'
+
 # define mac address and interface name
-wanMacInt="d0:37:45:6e:89:cd wan"
-apMACInt="e4:5f:01:69:26:43 ap"
+wanMacInt="d0:37:45:5b:8e:a9 wan"
+apMACInt="dc:a6:32:58:61:f7 ap"
 mon1MacInt="d0:37:45:54:ec:44 mon1"
 # Don't leave space between interface definition
 udevList="${wanMacInt},${apMACInt},${mon1MacInt}"
