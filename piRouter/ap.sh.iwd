@@ -11,7 +11,7 @@ then
 
     echo "Starig the iwd process"
     # let's start the iwd manually and to manage "wan" interface
-    #sudo ${IWD} -i ${wan} &
+    sudo ${IWD} -i ${wan} &
     # sudo ${IWD} &
     ${LOG} 'Wifi client started but it might take a while before it connected'
 else
