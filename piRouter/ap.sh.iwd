@@ -1,0 +1,148 @@
+#!/usr/bin/bash
+
+# include the global setting file
+#. ./setting.sh
+. ${BASH_SOURCE%/*}/setting.sh
+echo "Starig the iwd process"
+# let's start the iwd manually and to manage "wan" interface
+sudo ${IWD} -i ${wan} &
+# sudo ${IWD} &
+${LOG} 'Wifi client started but it might take a while before it connected'
+echo "wifi started"
+
+# -1 setup Ethernet and OTG Ethernet Interface
+# bring up onboard ethernet interface
+sudo ${IP_CMD} addr add ${eth_ip} dev ${eth_int}
+sudo ${IP_CMD} link set up dev ${eth_int}
+${LOG} 'Onboard Ethernet is configured and admin up'
+
+# bring up otg ethernet interface over USB interface
+sudo ${IP_CMD} addr add ${otg_ip} dev ${otg_int}
+sudo ${IP_CMD} link set up dev ${otg_int}
+# run dnsmasq services on the USB interface
+#sudo ${dnsmasq} -x /run/dnsmasq/dnsmasq.${otg_int}.pid -u dnsmasq -c "${conf_dir}/dnsmasq.conf.${otg_int}"
+sudo ${DNSMASQ} -u dnsmasq -C "${conf_dir}/dnsmasq.conf.${otg_int}"
+${LOG} 'OTG Ethernet through USB is configured and admin up'
+
+# ------------ setting up AP -------------
+# 1. create AP interface and kill all wpa process
+# the AP interface was planned to created with udev. But it's more stable to create it by script
+# the assuption is onboard wifi interface is renamed to "wan" in udev
+#sleep 10
+#sudo ${IP_CMD} link set down dev ${wan}
+#sudo ${IW} dev ${wan} interface add ${ap} type __ap
+#sudo ${IP_CMD} link set up dev ${ap}
+#${LOG} 'AP interface is created'
+#sleep 10
+#ps aux | grep wpa_supplicant > /root/still_running
+#sudo ${KILL_ALL} wpa_supplicant
+#${LOG} 'All wpa_supplicant process is killed'
+
+# ------------ setting up AP -------------
+# 1. Use dedicated onboard interface as AP -----
+#sudo ${IP_CMD} link set down dev ${wan}
+#sudo ${IW} dev ${wan} interface add ${ap} type __ap
+sudo ${IP_CMD} link set up dev ${ap}
+${LOG} 'AP interface is created'
+sleep 2
+ps aux | grep wpa_supplicant > ${HOME}/still_running
+sudo ${KILL_ALL} wpa_supplicant
+${LOG} 'All wpa_supplicant process is killed'
+
+# 2. Run hostapd to setup the AP
+# run from direct commadn line
+sudo ${HOSTAPD} -B -P /run/hostapd.pid -d -t -f /var/log/hostapd.log "${conf_dir}/hostapd.conf"
+echo "hostapd started"
+
+# 3. Setup static IP address on AP interface
+sudo ${IP_CMD} add flush dev ${ap}
+sudo ${IP_CMD} add add "${ap_net}.1/24" dev ${ap}
+
+# 4. Run dnsmasq services on the AP interface
+#/usr/bin/systemctl start dnsmasq
+#sudo ${DNSMASQ} -x /run/dnsmasq/dnsmasq.${ap}.pid -u dnsmasq -C "${conf_dir}/dnsmasq.conf.${ap}"
+sudo ${DNSMASQ} -u dnsmasq -C "${conf_dir}/dnsmasq.conf.${ap}"
+${LOG} 'Hostapd is started'
+
+# 5. Just re-enable the interface and let the iwd to connect to wifi and dhcp
+#sudo ${IP_CMD} link set up dev ${wan}
+#sudo ${WPA_SUPPLICANT} -i ${wan} -B -c "${conf_dir}/wpa_supplicant.conf" -f /var/log/wpa_supplicant.log
+#sudo ${IWD} -i ${wan}
+# not sure if we need to restart the process
+#sudo /usr/bin/systemctl restart iwd
+# 6. Run DCHP client to get IP address
+# sleep 10 sec to wait wan facing wireless interface up and running
+#sleep 10
+#sudo ${DHCLIENT} -v ${wan}
+
+# 7. setup the AP firewall rule sets
+# permit all output traffic to wan interface
+sudo ${IPTABLES} -I OUTPUT -o ${wan} -d 0.0.0.0/0 -j ACCEPT
+
+# allow established traffic from wan interface
+sudo ${IPTABLES} -I INPUT -i ${wan} -m state --state ESTABLISHED,RELATED -j ACCEPT
+# allow icmp ping packet for wan interfce
+sudo ${IPTABLES} -I INPUT -i ${wan} -p icmp -j ACCEPT
+# allow ssh (port 22222) packet for wan interface
+sudo ${IPTABLES} -I INPUT -i ${wan} -p tcp --dport 22222 -j ACCEPT
+
+# logging all traffic drop from wan
+sudo ${IPTABLES} -N LOGGING
+sudo ${IPTABLES} -A LOGGING -m limit --limit 2/min -j LOG --log-prefix "IPTables-Dropped: " --log-level 4
+sudo ${IPTABLES} -A LOGGING -j DROP
+sudo ${IPTABLES} -A INPUT -i ${wan} -j LOGGING
+
+
+# setup NAT for LAN to WAN traffic
+sudo ${IPTABLES} --table nat --append POSTROUTING --out-interface ${wan} -j MASQUERADE
+# allow LAN to WAN
+sudo ${IPTABLES} --append FORWARD --in-interface ${ap} -j ACCEPT
+# setup ip forwarding
+echo 1 | sudo tee /proc/sys/net/ipv4/ip_forward
+
+# 8. auotssh to hong kong
+#${AUTOSSH} -M 0 -T -N -f hkzbox
+#${LOG} 'Autossh started'
+
+# 8.5 allow ssh into device through
+# port 22222 (to loopback)
+# port 22223 (to LAN interface)
+echo 1 | sudo tee /proc/sys/net/ipv4/conf/all/route_localnet
+
+# NAT the desitnation for ssh traffic
+sudo ${IPTABLES} -t nat -I PREROUTING  -i wan -p tcp -m tcp --dport 22222 -j DNAT --to-destination 127.0.0.1:22
+sudo ${IPTABLES} -t nat -I PREROUTING  -i wan -p tcp -m tcp --dport 22223 -j DNAT --to-destination "${ap_net}.1:22"
+# Allow the NATed traffic For Incoming
+sudo ${IPTABLES} -I INPUT  -p tcp -d 127.0.0.1 --dport 22 -j ACCEPT
+sudo ${IPTABLES} -I INPUT  -p tcp -d "${ap_net}.1" --dport 22 -j ACCEPT
+
+${LOG} 'Firewall and routing done'
+
+# Notify through PROWL For The Status
+echo "before link"
+${IP_CMD} link list dev ${wan}
+# check until interface got the ip address
+while [ -z "`ip addr list dev ${wan} | grep 'inet .* brd .*'`"  ]
+do
+    sleep 1
+done
+echo "Got IP address"
+
+${LOG} "Trying to send notificaiton `${IP_CMD} link list dev ${wan}`"
+title="`hostname`: `date` (up)"
+message="`${IP_CMD} address list`"
+${PROWL} "${title}" "${message}"
+${LOG} "Notification Sent!!"
+# 9. wait for 30 second and check if the main wifi interface is connected to a known AP
+# (if not, change the scan period to 1800s stop wpa_client bring down the AP)
+#sleep 30
+#scanning=`${WPA_CLI} -i ${wan} status | grep SCANNING`
+#if [ "${scanning}" ]
+#then
+#    ${WPA_CLI} -i ${wan} scan_interval 1800
+#    ${LOG} "Wifi interface ${wan} failed to connect. Change scanning to 1800s to have stable AP service"
+#else
+#    ${LOG} "Wifi interface ${wan} is not scanning and likely connected"
+#fi
+
+
