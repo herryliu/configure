@@ -95,7 +95,7 @@ else
     # Start the wpa_supplicant on wlan0 interface to attach to outside PA
     sudo ${IP_CMD} link set up dev ${wan}
     #sudo ${WPA_SUPPLICANT} -i ${wan} -B -c "${conf_dir}/wpa_supplicant.conf" -f /var/log/wpa_supplicant.log
-    sudo ${WPA_SUPPLICANT} -i ${wan} -B -c "${conf_dir}/wpa_supplicant.conf"
+    sudo ${WPA_SUPPLICANT} -i ${wan} -D nl80211,wext -B -c "${conf_dir}/wpa_supplicant.conf"
     ${LOG} 'Wifi client started'
 fi
 
