@@ -525,7 +525,7 @@ nmap <leader>wf <Plug>VimwikiFollowLink
 
 " ------------ VIM Yank To System Buffer By OSC52 ------------
 function! Yank(text) abort
-  let escape = system('yank', a:text)
+  let escape = system('~/bin/yank', a:text)
   if v:shell_error
     echoerr escape
   else

@@ -15,6 +15,8 @@ IPTABLES='/usr/sbin/iptables'
 AUTOSSH='/usr/bin/autossh'
 PROWL="${EXECROOT}/push.sh"
 IWD="/usr/libexec/iwd"
+DHCPC="/usr/sbin/dhcpcd"
+WPAPASS="/usr/bin/wpa_passphrase"
 
 # Wifi/Ethernet Network Interface Mac
 # old tp-link TL-WN321G
@@ -31,7 +33,7 @@ WifiMode='wpa'
 APSSID='4784'
 
 # define mac address and interface name
-wanMacInt="d0:37:45:5b:8e:a9 wan"
+wanMacInt="d0:37:45:6e:89:cd wan"
 apMACInt="dc:a6:32:58:61:f7 ap"
 mon1MacInt="d0:37:45:54:ec:44 mon1"
 # Don't leave space between interface definition
