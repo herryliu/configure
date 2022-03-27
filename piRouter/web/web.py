@@ -125,6 +125,11 @@ class PiRouter(object):
         def scanAction():
             with use_scope("result", clear=True):
                 put_text(wi.getScan())
+                
+        def changeMacAction():
+            with use_scope("result", clear=True):
+                wi.changeMac("wan")
+                statusAction()
 
         def saveNetworkAction():
             wi.saveNetwork("wan")
@@ -139,6 +144,7 @@ class PiRouter(object):
             put_button('Known Network', onclick=knownNetworkAction),
             put_button('Status', onclick=statusAction),
             put_button('Scan', onclick=scanAction),
+            put_button('ChangeMac', onclick=changeMacAction),
             put_button('Add Network', onclick=addNetworkAction),
             put_button('Save Network', onclick=saveNetworkAction),
             put_button('Reload Config', onclick=reloadConfigAction),

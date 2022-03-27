@@ -9,16 +9,40 @@ class Wifi(object):
     def __init__(self, intf="wan"):
         self.intfs = [intf]
         self.wpa = '/usr/sbin/wpa_cli'
-        self.wpaAddNetwork ='/home/pi/piRouter/wpaNetwork.sh'
+        self.wpaAddNetwork = '/home/pi/piRouter/wpaNetwork.sh'
+        self.macChanger = '/usr/bin/macchanger'
+        self.ipCMD = '/usr/sbin/ip'
+        self.sendNote = '/home/pi/piRouter/push.sh'
         self.network = []
         self.getKnownNetworks()
 
-    '''
-    def addNetwork(self, intf, ssid, psk):
-        cmd = "{} \"{}\" \"{}\"".format(self.wpaAddNetwork, ssid, psk)
+    def changeMac(self, intf):
+        # shutdown interface
+        cmd = "sudo {} link set down dev {}".format(self.ipCMD, intf)
         self.runCMD(cmd)
-        self.confReload(intf)
-    '''
+        # change the mac address to a random one
+        # macchanger -r intf
+        cmd = "sudo {} -r {}".format(self.macChanger, intf)
+        self.runCMD(cmd)
+        # enable interface
+        cmd = "sudo {} link set up dev {}".format(self.ipCMD, intf)
+        self.runCMD(cmd)
+        # reconnect to AP
+        cmd = "sudo {} -i {} reassociate".format(self.wpa, intf)
+        self.runCMD(cmd)
+        # sleep for 10 second before send the notification
+        time.sleep(20)
+        # send the notificaiton
+        self.pushNotification("MAC Address Change")
+
+    def pushNotification(self, title):
+        # get the interface status
+        cmd = "{} address list".format(self.ipCMD)
+        result = self.runCMD(cmd)
+        # send notification
+        cmd = '{} "{}" "{}"'.format(self.sendNote, title, result)
+        self.runCMD(cmd)
+
     def addNetwork(self, intf, ssid, psk):
         # add netowkr and get the network id
         # sudo wpa_cli -i wan add_network
