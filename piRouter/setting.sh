@@ -17,6 +17,7 @@ PROWL="${EXECROOT}/push.sh"
 IWD="/usr/libexec/iwd"
 DHCPC="/usr/sbin/dhcpcd"
 WPAPASS="/usr/bin/wpa_passphrase"
+MACCHG="/usr/bin/macchanger"
 
 # Wifi/Ethernet Network Interface Mac
 # old tp-link TL-WN321G

@@ -13,9 +13,11 @@ class Wifi(object):
         self.macChanger = '/usr/bin/macchanger'
         self.ipCMD = '/usr/sbin/ip'
         self.sendNote = '/home/pi/piRouter/push.sh'
+        self.macRandom = '/home/pi/piRouter/mac.sh'
         self.network = []
         self.getKnownNetworks()
 
+    '''
     def changeMac(self, intf):
         # shutdown interface
         cmd = "sudo {} link set down dev {}".format(self.ipCMD, intf)
@@ -34,6 +36,11 @@ class Wifi(object):
         time.sleep(20)
         # send the notificaiton
         self.pushNotification("MAC Address Change")
+    '''
+    def changeMac(self, intf):
+        # run /home/pi/piRouter/mac.sh wan
+        cmd = "{} {}".format(self.macRandom, intf)
+        self.runCMD(cmd)
 
     def pushNotification(self, title):
         # get the interface status
