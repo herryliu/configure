@@ -7,7 +7,7 @@
 
 
 # -2 start the dhcp client for wan
-sudo ${DHCPC} ${wan}
+sudo ${DHCPC} -b ${wan}
 
 # -1 setup Ethernet and OTG Ethernet Interface
 # bring up onboard ethernet interface
