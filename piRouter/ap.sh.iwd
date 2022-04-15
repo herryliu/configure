@@ -5,15 +5,27 @@
 #. ${BASH_SOURCE%/*}/setting.sh
 . /home/pi/piRouter/setting.sh
 
-
-# -2 start the dhcp client for wan
-sudo ${DHCPC} -b ${wan}
-
-# -1 setup Ethernet and OTG Ethernet Interface
+# -3 setup Ethernet and OTG Ethernet Interface
 # bring up onboard ethernet interface
 sudo ${IP_CMD} addr add ${eth_ip} dev ${eth_int}
 sudo ${IP_CMD} link set up dev ${eth_int}
 ${LOG} 'Onboard Ethernet is configured and admin up'
+
+# -2 determine which interface is wan interface
+# scan through all ext* interface and rename the first one
+extInterface=`${IP_CMD} -o -4 link list | grep -P 'ext\d' | cut -d ' ' -f 2 | sort -n | cut -d ':' -f 1 | head -1`
+if [ ! -z "$extInterface" ]
+then
+    #rename the interface into "wan"
+    sudo ${IP_CMD} link set ${extInterface} down
+    sudo ${IP_CMD} link set ${extInterface} name ${wan}
+    sudo ${IP_CMD} link set ${wan} up
+    ${LOG} "Change interface ${extInterface} to wan"
+fi
+
+# -1 start the dhcp client for wan
+sudo ${DHCPC} -b ${wan}
+
 
 # bring up otg ethernet interface over USB interface
 sudo ${IP_CMD} addr add ${otg_ip} dev ${otg_int}
@@ -112,7 +124,7 @@ echo "Got IP address"
 
 ${LOG} "Trying to send notificaiton `${IP_CMD} link list dev ${wan}`"
 title="`hostname`: `date` (up)"
-message="`${IP_CMD} address list`"
+message="`${IP_CMD} -o -4 address list; echo "-----------"; ${IP_CMD} -o -4 link list`"
 ${PROWL} "${title}" "${message}"
 ${LOG} "Notification Sent!!"
 

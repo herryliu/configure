@@ -15,6 +15,6 @@ The piRouter setup is based on following:
 
 6. To regen the config, remove all files in ./conf and run the ./setup.sh
 
-7. Create sym-link piRouter pointing to main running script (ap.sh.iwd)
+7. Create sym-link "piRouter" pointing to main running script (ap.sh.iwd)
 
 8. piRouter will send notificaiton to iPhone if it can get internet connectivity after the bootup
