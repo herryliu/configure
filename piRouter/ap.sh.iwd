@@ -5,27 +5,12 @@
 #. ${BASH_SOURCE%/*}/setting.sh
 . /home/pi/piRouter/setting.sh
 
+# Setup Onboard Ethernet and OTG Ethernet 
 # -3 setup Ethernet and OTG Ethernet Interface
 # bring up onboard ethernet interface
 sudo ${IP_CMD} addr add ${eth_ip} dev ${eth_int}
 sudo ${IP_CMD} link set up dev ${eth_int}
 ${LOG} 'Onboard Ethernet is configured and admin up'
-
-# -2 determine which interface is wan interface
-# scan through all ext* interface and rename the first one
-extInterface=`${IP_CMD} -o -4 link list | grep -P 'ext\d' | cut -d ' ' -f 2 | sort -n | cut -d ':' -f 1 | head -1`
-if [ ! -z "$extInterface" ]
-then
-    #rename the interface into "wan"
-    sudo ${IP_CMD} link set ${extInterface} down
-    sudo ${IP_CMD} link set ${extInterface} name ${wan}
-    sudo ${IP_CMD} link set ${wan} up
-    ${LOG} "Change interface ${extInterface} to wan"
-fi
-
-# -1 start the dhcp client for wan
-sudo ${DHCPC} -b ${wan}
-
 
 # bring up otg ethernet interface over USB interface
 sudo ${IP_CMD} addr add ${otg_ip} dev ${otg_int}
@@ -33,30 +18,48 @@ sudo ${IP_CMD} link set up dev ${otg_int}
 sudo ${DNSMASQ} -u dnsmasq -C "${conf_dir}/dnsmasq.conf.${otg_int}"
 ${LOG} 'OTG Ethernet through USB is configured and admin up'
 
-# ------------ setting up AP -------------
-# 1. Use dedicated onboard interface as AP -----
+# Setup Onboard Wifi as AP
+# -2.1. Use dedicated onboard interface as AP
 sudo ${IP_CMD} link set up dev ${ap}
 ${LOG} 'AP interface is created'
 
-# 2. Run hostapd to setup the AP
+# -2.2. Run hostapd to setup the AP
 # run from direct commadn line
 sudo ${HOSTAPD} -B -P /run/hostapd.pid -d -t -f /var/log/hostapd.log "${conf_dir}/hostapd.conf"
 ${LOG} "hostapd started"
 
-# 3. Setup static IP address on AP interface
+# -2.3. Setup static IP address on AP interface
 sudo ${IP_CMD} add flush dev ${ap}
 sudo ${IP_CMD} add add "${ap_net}.1/24" dev ${ap}
 
-# 4. Run dnsmasq services on the AP interface
+# -2.4. Run dnsmasq services on the AP interface
 #/usr/bin/systemctl start dnsmasq
 #sudo ${DNSMASQ} -x /run/dnsmasq/dnsmasq.${ap}.pid -u dnsmasq -C "${conf_dir}/dnsmasq.conf.${ap}"
 sudo ${DNSMASQ} -u dnsmasq -C "${conf_dir}/dnsmasq.conf.${ap}"
 ${LOG} 'DHCP/DNS is started for hostapd'
 
-# 5. Run the Web interface
+# -1 determine which interface is wan interface
+# scan through all ext* interface and rename the first one
+extInterface=`${IP_CMD} -o -4 link list | grep -P 'ext\d' | cut -d ' ' -f 2 | sort -n | cut -d ':' -f 1 | head -1`
+if [ ! -z "$extInterface" ]
+then
+    wanFound="1"
+    #rename the interface into "wan"
+    sudo ${IP_CMD} link set ${extInterface} down
+    sudo ${IP_CMD} link set ${extInterface} name ${wan}
+    sudo ${IP_CMD} link set ${wan} up
+    ${LOG} "Change interface ${extInterface} to wan"
+    # -1 start the dhcp client for wan
+    sudo ${DHCPC} -b ${wan}
+else
+    wanFound="0"
+fi
+
+
+# 1. Run the Web interface
 ${EXECROOT}/web/web.py &
 
-# 6. setup the AP firewall rule sets
+# 2. setup the AP firewall rule sets
 # permit all output traffic to wan interface
 sudo ${IPTABLES} -I OUTPUT -o ${wan} -d 0.0.0.0/0 -j ACCEPT
 
@@ -92,40 +95,46 @@ sudo ${IPTABLES} -I INPUT  -p tcp -d "${ap_net}.1" --dport 22 -j ACCEPT
 
 ${LOG} 'Firewall and routing done'
 
-# bring up the wan wifi interface
+# 3. Start the wan interface to connect to known APs
 
-if [ ${WifiMode} = "iwd" ]
+# only setup the wan interface if it's available
+if [ "${wanFound}" = "1" ]
 then
 
-    echo "Starig the iwd process"
-    # let's start the iwd manually and to manage "wan" interface
-    sudo ${IWD} -i ${wan} &
-    # sudo ${IWD} &
-    ${LOG} 'Wifi client started but it might take a while before it connected'
-else
-    echo "start the wpa_supplicant "
-    # Start the wpa_supplicant on wlan0 interface to attach to outside PA
-    sudo ${IP_CMD} link set up dev ${wan}
-    #sudo ${WPA_SUPPLICANT} -i ${wan} -B -c "${conf_dir}/wpa_supplicant.conf" -f /var/log/wpa_supplicant.log
-    sudo ${WPA_SUPPLICANT} -i ${wan} -D nl80211,wext -B -c "${conf_dir}/wpa_supplicant.conf"
-    ${LOG} 'Wifi client started'
+	# bring up the wan wifi interface
+	if [ ${WifiMode} = "iwd" ]
+	then
+
+	    echo "Starig the iwd process"
+	    # let's start the iwd manually and to manage "wan" interface
+	    sudo ${IWD} -i ${wan} &
+	    # sudo ${IWD} &
+	    ${LOG} 'Wifi client started but it might take a while before it connected'
+	else
+	    echo "start the wpa_supplicant "
+	    # Start the wpa_supplicant on wlan0 interface to attach to outside PA
+	    sudo ${IP_CMD} link set up dev ${wan}
+	    #sudo ${WPA_SUPPLICANT} -i ${wan} -B -c "${conf_dir}/wpa_supplicant.conf" -f /var/log/wpa_supplicant.log
+	    sudo ${WPA_SUPPLICANT} -i ${wan} -D nl80211,wext -B -c "${conf_dir}/wpa_supplicant.conf"
+	    ${LOG} 'Wifi client started'
+	fi
+
+	echo "wifi started"
+	# Notify through PROWL For The Status
+	echo "before link"
+	${IP_CMD} link list dev ${wan}
+	# check until interface got the ip address
+	while [ -z "`ip addr list dev ${wan} | grep 'inet .* brd .*'`"  ]
+	do
+	    sleep 1
+	done
+	echo "Got IP address"
+
+	${LOG} "Trying to send notificaiton `${IP_CMD} link list dev ${wan}`"
+	title="`hostname`: `date` (up)"
+	message="`${IP_CMD} -o -4 address list; echo "-----------"; ${IP_CMD} -o -4 link list`"
+	${PROWL} "${title}" "${message}"
+	${LOG} "Notification Sent!!"
 fi
-
-echo "wifi started"
-# Notify through PROWL For The Status
-echo "before link"
-${IP_CMD} link list dev ${wan}
-# check until interface got the ip address
-while [ -z "`ip addr list dev ${wan} | grep 'inet .* brd .*'`"  ]
-do
-    sleep 1
-done
-echo "Got IP address"
-
-${LOG} "Trying to send notificaiton `${IP_CMD} link list dev ${wan}`"
-title="`hostname`: `date` (up)"
-message="`${IP_CMD} -o -4 address list; echo "-----------"; ${IP_CMD} -o -4 link list`"
-${PROWL} "${title}" "${message}"
-${LOG} "Notification Sent!!"
 
 
