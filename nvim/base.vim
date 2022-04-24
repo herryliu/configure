@@ -60,6 +60,7 @@ Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'terryma/vim-multiple-cursors'
 "Plug 'Raimondi/delimitMate'
 "Plug 'jiangmiao/auto-pairs'
+Plug 'tmsvg/pear-tree'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'fidian/hexmode'
@@ -205,8 +206,9 @@ set tags+=./.tags
 "enable the command dispaly
 set showcmd
 
-" disable the wrap
-set nowrap
+" enable the wrap
+"set nowrap
+set wrap
 
 "quick close file
 nnoremap Q :q!
