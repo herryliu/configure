@@ -34,12 +34,18 @@ WifiMode='wpa'
 APSSID='4784'
 
 # define mac address and interface name
-# T2U 1
-extMacInt0="d0:37:45:5b:8e:a9 ext0"
-# T2U 2
-extMacInt1="d0:37:45:6e:89:cd ext1"
 # Old TP-Link
-extMacInt2="d0:37:45:54:ec:44 ext2"
+extMacInt0="d0:37:45:54:ec:44 ext0"
+# T2U 1
+extMacInt1="d0:37:45:5b:8e:a9 ext1"
+# T2U 2
+extMacInt2="d0:37:45:6e:89:cd ext2"
+# T2U 3
+extMacInt3="54:af:97:d6:a4:32 ext3"
+# T2U 4
+extMacInt4="54:af:97:d6:c5:4a ext4"
+# T2U 5
+extMacInt5="54:af:97:d6:ba:38 ext5"
 
 # ap interface can be multiple to include all boards we have
 # since the board is unique, so won't have duplication
@@ -49,7 +55,7 @@ apMACInt1="e4:5f:01:69:26:43 ap"
 apMACInt2="dc:a6:32:58:61:f7 ap"
 
 # Don't leave space between interface definition
-udevList="${apMACInt1},${apMACInt2},${extMacInt0},${extMacInt1},${extMacInt2}"
+udevList="${apMACInt1},${apMACInt2},${extMacInt0},${extMacInt1},${extMacInt2},${extMacInt3},${extMacInt4},${extMacInt5}"
 
 # Interface name and IP address
 wan=${1:-'wan'}
